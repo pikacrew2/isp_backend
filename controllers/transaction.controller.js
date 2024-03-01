@@ -9,7 +9,7 @@ const transactionController  = async (req, res)=>{
      const ut = transId.toUpperCase()
     const tr = await TransModel.findOne({transId})
     const usi = await userModel.findOne({_id:user})
-    if(tr){
+    if(tr.transId == transId){
     return res.status(401).json({message:'this transaction id already submitted'})
     }
     if(usi.userType == 'super'){
@@ -32,7 +32,7 @@ const requestBySuper  =async (req, res)=>{
      const ut = transId.toUpperCase()
     const tr = await TransModel.findOne({transId})
     const usi = await userModel.findOne({_id:user})
-    if(tr){
+    if(tr.transId == transId){
     return res.status(401).json({message:'this transaction id already submitted'})
     }
     if(superUser){
