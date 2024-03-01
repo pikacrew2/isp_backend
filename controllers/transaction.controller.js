@@ -2,40 +2,51 @@ const TransModel = require('../models/transactionModel.js');
 const userModel = require("../models/user.model.js");
 const totalPaidModel = require('../models/totalPaid.js');
 
+
 const transactionController  = async (req, res)=>{
     try{
      const {amount, transId, user} = req.body;
-
+     const ut = transId.toUpperCase()
     const tr = await TransModel.findOne({transId})
+    const usi = await userModel.findOne({_id:user})
     if(tr){
     return res.status(401).json({message:'this transaction id already submitted'})
     }
-  
+    if(usi.userType == 'super'){
+        const trans = new TransModel({amount, transId, user, super:usi._id});
+        await trans.save();
+    }else{
         const trans = new TransModel({amount, transId, user});
         await trans.save();
-  
+    }
     return  res.status(200).json({message:'requested successfully! please wait for approve'})
     }catch(error){
      return   res.status(500).json({message:error})
     }
 } 
 
-const requestBySuper  = async (req, res)=>{
+
+const requestBySuper  =async (req, res)=>{
     try{
      const {amount, transId, user, superUser} = req.body;
+     const ut = transId.toUpperCase()
     const tr = await TransModel.findOne({transId})
+    const usi = await userModel.findOne({_id:user})
     if(tr){
     return res.status(401).json({message:'this transaction id already submitted'})
     }
-        const trans = new TransModel({amount:amount, transId:transId, user:user, super:suerUser});
+    if(superUser){
+        const trans = new TransModel({amount, transId, user, super:superUser});
         await trans.save();
- 
+    }else{
+        const trans = new TransModel({amount, transId, user});
+        await trans.save();
+    }
     return  res.status(200).json({message:'requested successfully! please wait for approve'})
     }catch(error){
      return   res.status(500).json({message:error})
     }
 } 
-
 
 
 
