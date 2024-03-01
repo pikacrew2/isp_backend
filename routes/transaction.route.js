@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {transactionController,test, reset, transByUser,trans,transAndApprove, lifetimePaid, single_month_paid, transApproved, transCancelled } = require('../controllers/transaction.controller.js');
+const {requestBySuper, transactionController,test, reset, transByUser,trans,transAndApprove, lifetimePaid, single_month_paid, transApproved, transCancelled } = require('../controllers/transaction.controller.js');
 
 
 router.post("/request", transactionController);
@@ -12,6 +12,7 @@ router.get("/trans", trans )
 router.post('/trans-and-approve/:transId', transAndApprove)
 router.post("/reset", reset)
 router.post('/test1',test)
+router.post('/request-super' , requestBySuper)
 
 
 module.exports = router
