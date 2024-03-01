@@ -27,7 +27,7 @@ const requestBySuper  = async (req, res)=>{
     if(tr){
     return res.status(401).json({message:'this transaction id already submitted'})
     }
-        const trans = new TransModel({amount, transId, user, super:suerUser});
+        const trans = new TransModel({amount:amount, transId:transId, user:user, super:suerUser});
         await trans.save();
  
     return  res.status(200).json({message:'requested successfully! please wait for approve'})
