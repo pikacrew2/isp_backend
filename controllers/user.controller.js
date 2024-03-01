@@ -6,16 +6,17 @@ const userController = async (req, res)=>{
     try{
     const {username, password, fullname, phone, mbps, ispid, location, userType} = req.body;
 
-    const checkUser = await userModel.findOne({$or:[{username},{ispid}]})
-    if(checkUser){
+    const checkUser = await userModel.findOne({username:username})
+    if(checkUser.username == username || checkUser.ispid == ispid){
        return res.status(401).json({message:'username or ispId already exist'});
-    }
-    const hashedPass = await bcrypt.hash(password, 10);
+    }else{
+            const hashedPass = await bcrypt.hash(password, 10);
 
     const insertUser = new userModel({username, userType, password:hashedPass, phone, ispid, fullname, phone, mbps, location})
     await insertUser.save();
   return  res.status(200).json({message:'user Created Successfully!'});
 
+    }
 
     }catch(error){
       return  res.status(500).json({message:"something went wrong"})
