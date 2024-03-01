@@ -23,6 +23,31 @@ const transactionController  = async (req, res)=>{
      return   res.status(500).json({message:error})
     }
 } 
+
+const requestBySuper  = async (req, res)=>{
+    try{
+     const {amount, transId, user, super} = req.body;
+     const ut = transId.toUpperCase()
+    const tr = await TransModel.findOne({transId})
+    if(tr){
+    return res.status(401).json({message:'this transaction id already submitted'})
+    }
+        const trans = new TransModel({amount, transId, user, super:super});
+        await trans.save();
+ 
+    return  res.status(200).json({message:'requested successfully! please wait for approve'})
+    }catch(error){
+     return   res.status(500).json({message:error})
+    }
+} 
+
+
+
+
+
+
+
+
 const transApproved = async (req, res) => {
 
   try {
@@ -182,5 +207,5 @@ try{
     res.status(500).json({message:'error'})
 }
 }
-module.exports = {transAndApprove,test,reset, transactionController,transByUser,trans,  transApproved, transCancelled, lifetimePaid, single_month_paid}
+module.exports = {requestBySuper, transAndApprove,test,reset, transactionController,transByUser,trans,  transApproved, transCancelled, lifetimePaid, single_month_paid}
 
