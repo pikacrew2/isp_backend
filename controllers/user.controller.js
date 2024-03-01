@@ -6,11 +6,10 @@ const userController = async (req, res)=>{
     try{
     const {username, password, fullname, phone, mbps, ispid, location, userType} = req.body;
 
-    const checkUser = await userModel.findOne({username:username})
-    if(checkUser.username == username || checkUser.ispid == ispid){
+    const checkUser = await userModel.findOne({username})
+    if(checkUser){
        return res.status(401).json({message:'username or ispId already exist'});
     }
-
 
     const hashedPass = await bcrypt.hash(password, 10);
 
