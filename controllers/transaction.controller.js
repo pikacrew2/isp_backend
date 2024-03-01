@@ -22,12 +22,12 @@ const transactionController  = async (req, res)=>{
 
 const requestBySuper  = async (req, res)=>{
     try{
-     const {amount, transId, user, super} = req.body;
+     const {amount, transId, user} = req.body;
     const tr = await TransModel.findOne({transId})
     if(tr){
     return res.status(401).json({message:'this transaction id already submitted'})
     }
-        const trans = new TransModel({amount, transId, user, super});
+        const trans = new TransModel({amount, transId, user});
         await trans.save();
  
     return  res.status(200).json({message:'requested successfully! please wait for approve'})
